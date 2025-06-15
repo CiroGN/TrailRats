@@ -14,6 +14,9 @@ export default function Index() {
       <Link href={'/login'}>
         Ir para login
       </Link>
+      <Link href={'/cadastro'}>
+        Ir para cadastro
+      </Link>
     </View>
   );
 }
