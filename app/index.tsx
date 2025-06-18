@@ -6,22 +6,10 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { navigate } from 'expo-router/build/global-state/routing';
 
-type RootStackParamList = {
-  Home: undefined;
-  Login: undefined;
-  Cadastro: undefined;
-};
-
-type HomeScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
 
 export default function Home() {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   return (
     <View style={styles.container}>
@@ -31,7 +19,7 @@ export default function Home() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigate('/login')}
           activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>Login</Text>
@@ -39,7 +27,7 @@ export default function Home() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Cadastro')}
+          onPress={() => navigate('/cadastro')}
           activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>Cadastro</Text>

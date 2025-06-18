@@ -1,3 +1,4 @@
+import { navigate } from 'expo-router/build/global-state/routing';
 import React, { useState } from 'react';
 import {
   View,
@@ -80,7 +81,7 @@ const LoginScreen: React.FC = () => {
 
       if (data.sucesso) {
         Alert.alert('Login realizado com sucesso!');
-        // Navegar para próxima tela aqui
+        navigate('/bemvindo');
       } else {
         Alert.alert('Erro', 'Nome ou senha inválidos');
       }

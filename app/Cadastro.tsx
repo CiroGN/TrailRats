@@ -1,3 +1,4 @@
+import { navigate } from 'expo-router/build/global-state/routing';
 import React, { useState } from 'react';
 import {
   View,
@@ -87,7 +88,7 @@ const RegisterScreen: React.FC = () => {
 
       if (data.sucesso) {
         Alert.alert('Cadastro realizado com sucesso!');
-        // Navegar ou limpar campos
+        navigate('/login');
       } else {
         Alert.alert('Erro', data.mensagem || 'Falha no cadastro.');
       }
