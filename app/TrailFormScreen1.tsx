@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -20,7 +21,13 @@ export default function TrailFormScreen() {
   const [idosos, setIdosos] = useState(false);
   const [criancas, setCriancas] = useState(false);
 
-  const renderCircles = (selected: number, setSelected: (v: number) => void) => {
+  const navigation = useNavigation();
+
+  const handleIrParaOpcoes = () => {
+    navigation.navigate('fotos'); // Certifique-se de que 'fotos' está registrado no seu Stack.Navigator
+  };
+
+  const renderCircles = (selected, setSelected) => {
     return (
       <View style={styles.circleRow}>
         {[1, 2, 3, 4, 5].map((val) => (
@@ -34,7 +41,7 @@ export default function TrailFormScreen() {
     );
   };
 
-  const renderSwitch = (label: string, value: boolean, setValue: (v: boolean) => void) => (
+  const renderSwitch = (label, value, setValue) => (
     <View style={styles.switchRow}>
       <Text style={styles.label}>{label}</Text>
       <Switch value={value} onValueChange={setValue} />
@@ -83,7 +90,7 @@ export default function TrailFormScreen() {
       </View>
 
       <View style={styles.formContainer}>
-        {renderSwitch('ASSISTENCIA NO CAMINHO', assistencia, setAssistencia)}
+        {renderSwitch('ASSISTÊNCIA NO CAMINHO', assistencia, setAssistencia)}
         {renderSwitch('PRECISA DE GUIA', precisaGuia, setPrecisaGuia)}
         <Text style={[styles.label, { marginTop: 20 }]}>RECOMENDA PARA:</Text>
         {renderSwitch('IDOSOS', idosos, setIdosos)}
@@ -92,7 +99,7 @@ export default function TrailFormScreen() {
 
       <TouchableOpacity
         style={styles.continueButton}
-        onPress={() => console.log('Continuar')}
+        onPress={handleIrParaOpcoes}
       >
         <Text style={styles.continueText}>CONTINUAR</Text>
       </TouchableOpacity>
