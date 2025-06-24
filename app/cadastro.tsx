@@ -73,11 +73,26 @@ const RegisterScreen: React.FC = () => {
   const API_URL = 'http://192.168.15.24:5000';
 
   const handleRegister = async () => {
-    if (senha !== confirmarSenha) {
-      Alert.alert('Erro', 'As senhas não coincidem!');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^.{5,}$/; // Pelo menos 5 caracteres
+
+    if (!emailRegex.test(email)) {
+      alert('Por favor, insira um email válido (ex: seu.email@exemplo.com).');
       return;
     }
-
+    if (nome.length <= 2 ){
+      alert('Insira um nome válido, ao menos 3 letras');
+      return;
+    }
+    if (!passwordRegex.test(senha)) {
+      alert('A senha deve ter pelo menos 5 caracteres.');
+      return;
+    }
+    if (senha !== confirmarSenha) {
+      alert('As senhas não coincidem!');
+      return;
+    }
+      
     try {
       const response = await fetch(`${API_URL}/cadastro`, {
         method: 'POST',
