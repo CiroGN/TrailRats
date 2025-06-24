@@ -70,7 +70,6 @@ const RegisterScreen: React.FC = () => {
   const [nome, setNome] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
   const [confirmarSenha, setConfirmarSenha] = useState<string>('');
-  const API_URL = 'http://192.168.0.10:5000';
 
   const handleRegister = async () => {
     if (senha !== confirmarSenha) {
@@ -79,7 +78,7 @@ const RegisterScreen: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/cadastrar`, {
+      const response = await fetch('http://SEU_BACKEND/cadastrar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, nome, senha }),
