@@ -6,34 +6,37 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Importa navegação
+import { useNavigation } from '@react-navigation/native';
 
 export default function AdicionarFotosScreen() {
-  const navigation = useNavigation(); // Hook para navegar
+  const navigation = useNavigation();
 
   const handleIrParaOpcoes = () => {
-    navigation.navigate('opcao_foto'); // Nome da tela que você registrou no navigator
+    navigation.navigate('opcao_foto'); // Ajuste para o nome correto da sua rota
   };
 
   return (
     <View style={styles.container}>
-      {/* Título */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>ADICIONE FOTOS</Text>
+      {/* Agrupamento do título + botão da câmera */}
+      <View style={styles.topSection}>
+        {/* Título */}
+        <View style={styles.header}>
+          <Text style={styles.headerText}>ADICIONE FOTOS</Text>
+        </View>
+
+        {/* Botão com ícone da câmera */}
+        <TouchableOpacity style={styles.cameraButton} onPress={handleIrParaOpcoes}>
+          <Image
+            source={require('../assets/images/camera.png')}
+            style={styles.cameraIcon}
+          />
+          <View style={styles.plusOverlay}>
+            <Text style={styles.plusText}>+</Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
-      {/* Botão com ícone de câmera */}
-      <TouchableOpacity style={styles.cameraButton} onPress={handleIrParaOpcoes}>
-        <Image
-          source={require('../assets/images/camera.png')} // Ícone da câmera
-          style={styles.cameraIcon}
-        />
-        <View style={styles.plusOverlay}>
-          <Text style={styles.plusText}>+</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Logo Trail Rats */}
+      {/* Logo Trail Rats no rodapé */}
       <Image
         source={require('../assets/images/logo.png')}
         style={styles.logo}
@@ -50,6 +53,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 40,
   },
+  topSection: {
+    alignItems: 'center',
+  },
   header: {
     backgroundColor: '#FFD18B',
     borderTopLeftRadius: 25,
@@ -58,6 +64,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderColor: '#000',
     borderWidth: 1,
+    marginBottom: 10, // ajuste aqui o espaçamento entre o botão e o quadrado
   },
   headerText: {
     fontSize: 18,
