@@ -27,7 +27,7 @@ export default function Home() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigate('/cadastro')}
+          onPress={() => navigate('/Cadastro')}
           activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>Cadastro</Text>
