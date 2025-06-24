@@ -9,7 +9,7 @@ import {
 import { navigate } from 'expo-router/build/global-state/routing';
 
 
-export default function Home() {
+export default function App() {
 
   return (
     <View style={styles.container}>
@@ -27,7 +27,7 @@ export default function Home() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigate('/Cadastro')}
+          onPress={() => navigate('/cadastro')}
           activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>Cadastro</Text>

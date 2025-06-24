@@ -6,13 +6,12 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { navigate } from 'expo-router/build/global-state/routing';
 
 export default function AdicionarFotosScreen() {
-  const navigation = useNavigation();
 
   const handleIrParaOpcoes = () => {
-    navigation.navigate('opcao_foto'); // Ajuste para o nome correto da sua rota
+    navigate('/opcao_foto');
   };
 
   return (
