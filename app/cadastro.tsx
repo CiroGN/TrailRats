@@ -1,3 +1,4 @@
+import { navigate } from 'expo-router/build/global-state/routing';
 import React, { useState } from 'react';
 import {
   View,
@@ -69,6 +70,7 @@ const RegisterScreen: React.FC = () => {
   const [nome, setNome] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
   const [confirmarSenha, setConfirmarSenha] = useState<string>('');
+  const API_URL = 'http://192.168.0.10:5000';
 
   const handleRegister = async () => {
     if (senha !== confirmarSenha) {
@@ -77,7 +79,7 @@ const RegisterScreen: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://SEU_BACKEND/cadastrar', {
+      const response = await fetch(`${API_URL}/cadastrar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, nome, senha }),
@@ -87,7 +89,7 @@ const RegisterScreen: React.FC = () => {
 
       if (data.sucesso) {
         Alert.alert('Cadastro realizado com sucesso!');
-        // Navegar ou limpar campos
+        navigate('/login');
       } else {
         Alert.alert('Erro', data.mensagem || 'Falha no cadastro.');
       }
