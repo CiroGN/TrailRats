@@ -77,19 +77,19 @@ const RegisterScreen: React.FC = () => {
     const passwordRegex = /^.{5,}$/; // Pelo menos 5 caracteres
 
     if (!emailRegex.test(email)) {
-      alert('Por favor, insira um email válido (ex: seu.email@exemplo.com).');
+      Alert.alert('Erro de Cadastro', 'Por favor, insira um email válido (ex: seu.email@exemplo.com).');
       return;
     }
     if (nome.length <= 2 ){
-      alert('Insira um nome válido, ao menos 3 letras');
+      Alert.alert('Erro de Cadastro', 'Insira um nome válido, ao menos 3 letras');
       return;
     }
     if (!passwordRegex.test(senha)) {
-      alert('A senha deve ter pelo menos 5 caracteres.');
+      Alert.alert('Erro de Cadastro', 'A senha deve ter pelo menos 5 caracteres.');
       return;
     }
     if (senha !== confirmarSenha) {
-      alert('As senhas não coincidem!');
+      Alert.alert('Erro de Cadastro', 'As senhas não coincidem!');
       return;
     }
       
