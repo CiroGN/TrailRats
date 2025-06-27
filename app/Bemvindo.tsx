@@ -1,29 +1,40 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from 'react-native';
+import { navigate } from 'expo-router/build/global-state/routing';
+
 
 export default function App() {
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.welcome}>BEM VINDO USER!</Text>
-        <AntDesign name="user" size={28} color="black" style={styles.icon} />
-      </View>
+      {/* Aqui você pode colocar um logo com <Image source={} style={styles.logo} /> */}
+      <View style={styles.form}>
+        <Text style={styles.title}>Bem-vindo ao GymRats</Text>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, { backgroundColor: '#7FE3D8' }]}>
-          <Text style={styles.buttonText}>NOVA TRILHA</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigate('/login')}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, { backgroundColor: '#47B6FF' }]}>
-          <Text style={styles.buttonText}>TRILHAS REALIZADAS</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigate('/cadastro')}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.buttonText}>Cadastro</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.logo}>
-        <Text style={styles.logoTrail}>Trail</Text>
-        <Text style={styles.logoRats}> Rats</Text>
-      </Text>
+      <Text style={styles.footerText}>Vamos nessa!</Text>
     </View>
   );
 }
@@ -31,59 +42,49 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFAA5C', // cor sólida semelhante ao fundo laranja
-    paddingTop: 60,
+    backgroundColor: '#FFA726', // cor de fundo
     alignItems: 'center',
-  },
-  header: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 40,
-  },
-  welcome: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#000',
-  },
-  icon: {
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 4,
-  },
-  buttonContainer: {
-    width: '90%',
-    backgroundColor: '#FFD18B',
-    borderRadius: 20,
-    paddingVertical: 25,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    gap: 20,
-  },
-  button: {
-    width: '90%',
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#000',
-  },
-  buttonText: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: '#000',
+    justifyContent: 'center',
+    padding: 20,
   },
   logo: {
-    position: 'absolute',
-    bottom: 40,
-    fontSize: 32,
+    width: 150,
+    height: 100,
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
+  form: {
+    backgroundColor: '#FFE0B2',
+    borderRadius: 20,
+    padding: 20,
+    width: '100%',
+    maxWidth: 300,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  title: {
+    color: '#D32F2F',
     fontWeight: 'bold',
+    fontSize: 26,
+    marginBottom: 40,
   },
-  logoTrail: {
-    color: '#FFB347',
+  button: {
+    backgroundColor: '#CCFF00',
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    borderRadius: 20,
+    marginBottom: 20,
+    width: '100%',
+    alignItems: 'center',
   },
-  logoRats: {
-    color: '#FFD700',
+  buttonText: {
+    color: '#D32F2F',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  footerText: {
+    color: '#D32F2F',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
 });
