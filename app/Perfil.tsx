@@ -1,17 +1,14 @@
-Perfil
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { navigate } from 'expo-router/build/global-state/routing';
 
 export default function ProfileScreen() {
-  const navigation = useNavigation();
 
   const distanciaPercorrida = '0 km';
   const trilhasTotais = '0';
 
   const handleEditar = () => {
-    navigation.navigate('edicao'); // Certifique-se de registrar essa rota no seu Stack.Navigator
+    navigate('/edicao');
   };
 
   return (
