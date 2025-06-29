@@ -5,11 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  StyleSheet,
   Switch,
   Alert,
 } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
+
+// Importa o estilo separado
+import styles from './styles/trailFormScreen1Styles';
 
 export default function TrailFormScreen() {
   const [trailName, setTrailName] = useState('');
@@ -24,51 +26,51 @@ export default function TrailFormScreen() {
   const API_URL = 'http://192.168.15.24:5000';
 
   const handleCadastrarTrilha = async () => {
-  try {
-    const response = await fetch(`${API_URL}/trail`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        trailName,
-        difficulty,
-        danger,
-        distance,
-        time,
-        assistencia,
-        precisaGuia,
-        idosos,
-        criancas,
-      }),
-    });
+    try {
+      const response = await fetch(`${API_URL}/trail`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trailName,
+          difficulty,
+          danger,
+          distance,
+          time,
+          assistencia,
+          precisaGuia,
+          idosos,
+          criancas,
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.sucesso) {
-      Alert.alert('Sucesso', data.mensagem);
-      navigate('/fotos');
-    } else {
-      Alert.alert('Erro', data.mensagem || 'Erro ao cadastrar trilha');
+      if (data.sucesso) {
+        Alert.alert('Sucesso', data.mensagem);
+        navigate('/fotos');
+      } else {
+        Alert.alert('Erro', data.mensagem || 'Erro ao cadastrar trilha');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Erro de conexão com o servidor');
     }
-  } catch (error) {
-    console.error(error);
-    Alert.alert('Erro', 'Erro de conexão com o servidor');
-  }
-};
-
-
-  const renderCircles = (selected, setSelected) => {
-    return (
-      <View style={styles.circleRow}>
-        {[1, 2, 3, 4, 5].map((val) => (
-          <TouchableOpacity
-            key={val}
-            onPress={() => setSelected(val)}
-            style={[styles.circle, selected >= val ? styles.circleSelected : {}]}
-          />
-        ))}
-      </View>
-    );
   };
+
+  const renderCircles = (selected, setSelected) => (
+    <View style={styles.circleRow}>
+      {[1, 2, 3, 4, 5].map((val) => (
+        <TouchableOpacity
+          key={val}
+          onPress={() => setSelected(val)}
+          style={[
+            styles.circle,
+            selected >= val ? styles.circleSelected : {},
+          ]}
+        />
+      ))}
+    </View>
+  );
 
   const renderSwitch = (label, value, setValue) => (
     <View style={styles.switchRow}>
@@ -135,75 +137,3 @@ export default function TrailFormScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: '#FFA44F',
-    alignItems: 'center',
-    paddingBottom: 40,
-  },
-  title: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  formContainer: {
-    backgroundColor: '#FFD18B',
-    marginTop: 20,
-    borderRadius: 25,
-    padding: 20,
-    width: '90%',
-  },
-  label: {
-    fontWeight: '600',
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  input: {
-    borderWidth: 2,
-    borderColor: '#000',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    backgroundColor: '#FFF1D6',
-  },
-  circleRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    gap: 12,
-    marginTop: 5,
-  },
-  circle: {
-    width: 25,
-    height: 25,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: '#000',
-    backgroundColor: '#fff',
-  },
-  circleSelected: {
-    backgroundColor: '#000',
-  },
-  row: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  continueButton: {
-    marginTop: 30,
-    backgroundColor: '#E9FF00',
-    paddingVertical: 14,
-    paddingHorizontal: 40,
-    borderRadius: 20,
-  },
-  continueText: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  switchRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-});
