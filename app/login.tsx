@@ -12,12 +12,11 @@ import { navigate } from 'expo-router/build/global-state/routing';
 
 // IMPORTANDO SEU ESTILO SEPARADO
 import styles from './styles/loginStyles'; // 👈 ajuste o caminho conforme seu projeto
-import API_URL from './utility/urlfetch';
 
 const LoginScreen: React.FC = () => {
   const [nome, setNome] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
-
+  const API_URL = 'http://192.168.15.24:5000'
   const handleLogin = async () => {
     try {
       const response = await fetch(`${API_URL}/login`, {
