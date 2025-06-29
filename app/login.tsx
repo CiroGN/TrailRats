@@ -11,7 +11,6 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -69,11 +68,10 @@ const styles = StyleSheet.create({
 const LoginScreen: React.FC = () => {
   const [nome, setNome] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
-  const API_URL = 'http://192.168.15.24:5000';
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch('http://SEU_BACKEND/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome, senha }),

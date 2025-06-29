@@ -1,35 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { navigate } from 'expo-router/build/global-state/routing';
 
-export default function HomeScreen() {
-
+export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.welcome}>BEM VINDO USER!</Text>
-
-        {/* Botão que leva para a tela de perfil */}
-        <TouchableOpacity onPress={() => navigate('/Perfil')}>
-          <AntDesign name="user" size={28} color="black" style={styles.icon} />
-        </TouchableOpacity>
+        <AntDesign name="user" size={28} color="black" style={styles.icon} />
       </View>
 
       <View style={styles.buttonContainer}>
-        {/* Botão NOVA TRILHA */}
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#7FE3D8' }]}
-          onPress={() => navigate('/TrailFormScreen1')}
-        >
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#7FE3D8' }]}>
           <Text style={styles.buttonText}>NOVA TRILHA</Text>
         </TouchableOpacity>
 
-        {/* Botão TRILHAS REALIZADAS */}
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#47B6FF' }]}
-          onPress={() => navigate('/feed')}
-        >
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#47B6FF' }]}>
           <Text style={styles.buttonText}>TRILHAS REALIZADAS</Text>
         </TouchableOpacity>
       </View>
@@ -45,7 +31,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFAA5C',
+    backgroundColor: '#FFAA5C', // cor sólida semelhante ao fundo laranja
     paddingTop: 60,
     alignItems: 'center',
   },

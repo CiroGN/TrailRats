@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -7,9 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
-  Alert,
 } from 'react-native';
-import { navigate } from 'expo-router/build/global-state/routing';
 
 export default function TrailFormScreen() {
   const [trailName, setTrailName] = useState('');
@@ -21,40 +20,12 @@ export default function TrailFormScreen() {
   const [precisaGuia, setPrecisaGuia] = useState(false);
   const [idosos, setIdosos] = useState(false);
   const [criancas, setCriancas] = useState(false);
-  const API_URL = 'http://192.168.15.24:5000';
 
-  const handleCadastrarTrilha = async () => {
-  try {
-    const response = await fetch(`${API_URL}/trail`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        trailName,
-        difficulty,
-        danger,
-        distance,
-        time,
-        assistencia,
-        precisaGuia,
-        idosos,
-        criancas,
-      }),
-    });
+  const navigation = useNavigation();
 
-    const data = await response.json();
-
-    if (data.sucesso) {
-      Alert.alert('Sucesso', data.mensagem);
-      navigate('/fotos');
-    } else {
-      Alert.alert('Erro', data.mensagem || 'Erro ao cadastrar trilha');
-    }
-  } catch (error) {
-    console.error(error);
-    Alert.alert('Erro', 'Erro de conexão com o servidor');
-  }
-};
-
+  const handleIrParaOpcoes = () => {
+    navigation.navigate('fotos'); // Certifique-se de que 'fotos' está registrado no seu Stack.Navigator
+  };
 
   const renderCircles = (selected, setSelected) => {
     return (
@@ -128,7 +99,7 @@ export default function TrailFormScreen() {
 
       <TouchableOpacity
         style={styles.continueButton}
-        onPress={handleCadastrarTrilha}
+        onPress={handleIrParaOpcoes}
       >
         <Text style={styles.continueText}>CONTINUAR</Text>
       </TouchableOpacity>
