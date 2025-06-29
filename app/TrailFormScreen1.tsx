@@ -12,6 +12,7 @@ import { navigate } from 'expo-router/build/global-state/routing';
 
 // Importa o estilo separado
 import styles from './styles/trailFormScreen1Styles';
+import API_URL from './utility/urlfetch';
 
 export default function TrailFormScreen() {
   const [trailName, setTrailName] = useState('');
@@ -23,7 +24,6 @@ export default function TrailFormScreen() {
   const [precisaGuia, setPrecisaGuia] = useState(false);
   const [idosos, setIdosos] = useState(false);
   const [criancas, setCriancas] = useState(false);
-  const API_URL = 'http://192.168.15.24:5000';
 
   const handleCadastrarTrilha = async () => {
     try {

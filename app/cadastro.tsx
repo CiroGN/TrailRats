@@ -12,13 +12,13 @@ import { navigate } from 'expo-router/build/global-state/routing';
 
 // Importando o estilo separado
 import styles from './styles/registerStyles';
+import API_URL from '@/app/utility/urlfetch';
 
 const RegisterScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [nome, setNome] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
   const [confirmarSenha, setConfirmarSenha] = useState<string>('');
-  const API_URL = 'http://192.168.15.24:5000';
 
   const handleRegister = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
