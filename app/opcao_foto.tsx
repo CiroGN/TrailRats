@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import styles from './styles/opcao_fotoStyles'; // importando os estilos separados
+import { navigate } from 'expo-router/build/global-state/routing';
 
 export default function AdicionarFotosScreen() {
   const [imagens, setImagens] = useState([]);
@@ -53,6 +54,7 @@ export default function AdicionarFotosScreen() {
 
   const handleAvancar = () => {
     Alert.alert('Avançar', 'Próxima etapa...');
+    navigate('/feed');
   };
 
   return (
