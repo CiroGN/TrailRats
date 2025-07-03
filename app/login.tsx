@@ -31,6 +31,7 @@ const LoginScreen: React.FC = () => {
       if (data.sucesso) {
         Alert.alert('Login realizado com sucesso!');
         await AsyncStorage.setItem('user_id', String(data.user_id));
+        await AsyncStorage.setItem('token', data.token);
         navigate('/bemvindo');
       } else {
         Alert.alert('Erro', 'Nome ou senha inválidos');

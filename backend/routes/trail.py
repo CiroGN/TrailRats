@@ -9,7 +9,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 trail_bp = Blueprint('trail', __name__)
 
-@trail_bp.route('/trilha', methods=['POST'])
+@trail_bp.route('/trail', methods=['POST'])
 def cadastrar_trilha():
     data = request.get_json()
     token = request.headers.get('Authorization')
@@ -18,6 +18,8 @@ def cadastrar_trilha():
         return jsonify({'sucesso': False, 'mensagem': 'Token JWT ausente'}), 401
 
     try:
+        if token.startswith("Bearer "):
+            token = token[7:]
         decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
         user_id = decoded['user_id']
     except jwt.ExpiredSignatureError:
@@ -25,13 +27,13 @@ def cadastrar_trilha():
     except jwt.InvalidTokenError:
         return jsonify({'sucesso': False, 'mensagem': 'Token inválido'}), 401
 
-    nome = data.get('nome')
-    dificuldade = data.get('dificuldade')
-    perigo = data.get('perigo')
-    distancia = data.get('distancia')
-    tempo = data.get('tempo')
+    nome = data.get('trailName')
+    dificuldade = data.get('dificulty')
+    perigo = data.get('danger')
+    distancia = data.get('distance')
+    tempo = data.get('time')
     assistencia = data.get('assistencia')
-    guia = data.get('guia')
+    guia = data.get('precisaGuia')
     idosos = data.get('idosos')
     criancas = data.get('criancas')
 

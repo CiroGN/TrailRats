@@ -27,10 +27,14 @@ export default function TrailFormScreen() {
   const API_URL = 'http://192.168.15.24:5000'
   const handleCadastrarTrilha = async () => {
     try {
+      const token = await AsyncStorage.getItem('token');
       const userId = await AsyncStorage.getItem('user_id');
       const response = await fetch(`${API_URL}/trail`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+         },
         body: JSON.stringify({
           trailName,
           difficulty,
@@ -41,7 +45,7 @@ export default function TrailFormScreen() {
           precisaGuia,
           idosos,
           criancas,
-          usuario_id: userId,
+          userId,
         }),
       });
 

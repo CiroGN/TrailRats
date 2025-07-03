@@ -82,12 +82,13 @@ export default function AdicionarFotosScreen() {
         type: mimeType,
       });
     });
-
+    const token = await AsyncStorage.getItem('token');
     const response = await fetch(`${API_URL}/upload_imagem`, {
       method: 'POST',
       body: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
       },
     });
 
