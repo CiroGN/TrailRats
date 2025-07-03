@@ -28,7 +28,7 @@ def cadastrar_trilha():
         return jsonify({'sucesso': False, 'mensagem': 'Token inválido'}), 401
 
     nome = data.get('trailName')
-    dificuldade = data.get('dificulty')
+    dificuldade = data.get('difficulty')
     perigo = data.get('danger')
     distancia = data.get('distance')
     tempo = data.get('time')

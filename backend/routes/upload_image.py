@@ -6,14 +6,15 @@ from db import get_connection
 upload_bp = Blueprint('upload', __name__)
 UPLOAD_FOLDER = 'uploads'
 
-# Cria o diretório se não existir
+# Cria o diretório base se não existir
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 @upload_bp.route('/upload_imagem', methods=['POST'])
 def upload_imagem():
-    trail_id = int(request.form.get('trail_id'))
-    imagens = request.files.getlist('imagens')  # múltiplas imagens
+    trail_id = request.form.get('trail_id')
+    imagens = request.files.getlist('imagens')
+
     print("Form data recebido:", request.form)
 
     if not trail_id:
@@ -25,14 +26,20 @@ def upload_imagem():
         conn = get_connection()
         cursor = conn.cursor()
 
+        # Cria subpasta para essa trilha
+        pasta_trilha = os.path.join(UPLOAD_FOLDER, f"trilha_{trail_id}")
+        if not os.path.exists(pasta_trilha):
+            os.makedirs(pasta_trilha)
+
         for imagem in imagens:
             filename = secure_filename(imagem.filename)
-            caminho = os.path.join(UPLOAD_FOLDER, filename)
-            imagem.save(caminho)
+            caminho_completo = os.path.join(pasta_trilha, filename)
+            imagem.save(caminho_completo)
 
-            # Salva o caminho no banco
-            print(f"Inserindo imagem: trail_id={trail_id}, caminho={caminho}")
-            cursor.execute("INSERT INTO images (trail_id, image_url) VALUES (%s, %s)", (trail_id, caminho))
+            # Salva o caminho relativo (para URL)
+            caminho_relativo = os.path.join(f"uploads/trilha_{trail_id}", filename).replace('\\', '/')
+            print(f"Inserindo imagem: trail_id={trail_id}, caminho={caminho_relativo}")
+            cursor.execute("INSERT INTO images (trail_id, image_url) VALUES (%s, %s)", (trail_id, caminho_relativo))
 
         conn.commit()
         return jsonify({'sucesso': True, 'mensagem': 'Imagens salvas com sucesso'}), 201
