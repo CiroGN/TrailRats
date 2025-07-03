@@ -9,9 +9,10 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // IMPORTANDO SEU ESTILO SEPARADO
-import styles from './styles/loginStyles'; // 👈 ajuste o caminho conforme seu projeto
+import styles from './styles/loginStyles'; 
 
 const LoginScreen: React.FC = () => {
   const [nome, setNome] = useState<string>('');
@@ -29,6 +30,7 @@ const LoginScreen: React.FC = () => {
 
       if (data.sucesso) {
         Alert.alert('Login realizado com sucesso!');
+        await AsyncStorage.setItem('user_id', String(data.user_id));
         navigate('/bemvindo');
       } else {
         Alert.alert('Erro', 'Nome ou senha inválidos');

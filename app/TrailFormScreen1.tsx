@@ -12,6 +12,7 @@ import { navigate } from 'expo-router/build/global-state/routing';
 
 // Importa o estilo separado
 import styles from './styles/trailFormScreen1Styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TrailFormScreen() {
   const [trailName, setTrailName] = useState('');
@@ -26,6 +27,7 @@ export default function TrailFormScreen() {
   const API_URL = 'http://192.168.15.24:5000'
   const handleCadastrarTrilha = async () => {
     try {
+      const userId = await AsyncStorage.getItem('user_id');
       const response = await fetch(`${API_URL}/trail`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,12 +41,14 @@ export default function TrailFormScreen() {
           precisaGuia,
           idosos,
           criancas,
+          usuario_id: userId,
         }),
       });
 
       const data = await response.json();
 
-      if (data.sucesso) {
+      if (data.sucesso && data.trail_id) {
+        await AsyncStorage.setItem('trail_id', String(data.trail_id));
         Alert.alert('Sucesso', data.mensagem);
         navigate('/fotos');
       } else {

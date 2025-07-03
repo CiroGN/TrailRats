@@ -10,9 +10,11 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import styles from './styles/opcao_fotoStyles'; // importando os estilos separados
 import { navigate } from 'expo-router/build/global-state/routing';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AdicionarFotosScreen() {
   const [imagens, setImagens] = useState([]);
+  const API_URL = 'http://192.168.15.24:5000';
 
   const handleGaleria = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -52,10 +54,57 @@ export default function AdicionarFotosScreen() {
     }
   };
 
-  const handleAvancar = () => {
-    Alert.alert('Avançar', 'Próxima etapa...');
-    navigate('/feed');
-  };
+  const handleAvancar = async () => {
+  try {
+    const trailId = await AsyncStorage.getItem('trail_id');
+    if (!trailId) {
+      Alert.alert('Erro', 'ID da trilha não encontrado');
+      return;
+    }
+
+    if (imagens.length === 0) {
+      Alert.alert('Atenção', 'Adicione ao menos uma imagem antes de continuar.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('trail_id', trailId);
+
+    imagens.forEach((uri, index) => {
+      const filename = uri.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename || '');
+      const ext = match ? match[1] : 'jpg';
+      const mimeType = `image/${ext}`;
+
+      formData.append('imagens', {
+        uri,
+        name: `imagem_${index}.${ext}`,
+        type: mimeType,
+      });
+    });
+
+    const response = await fetch(`${API_URL}/upload_imagem`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.sucesso) {
+      Alert.alert('Sucesso', 'Imagens salvas com sucesso!');
+      navigate('/feed');
+    } else {
+      Alert.alert('Erro', data.mensagem || 'Erro ao enviar imagens.');
+    }
+
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Erro', 'Falha na comunicação com o servidor.');
+  }
+};
 
   return (
     <View style={styles.container}>
