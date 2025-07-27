@@ -1,53 +1,75 @@
 from flask import Blueprint, request, jsonify
 from db import get_connection
+from dotenv import load_dotenv
+import jwt
+import os
+
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 trail_bp = Blueprint('trail', __name__)
 
 @trail_bp.route('/trail', methods=['POST'])
 def cadastrar_trilha():
     data = request.get_json()
+    token = request.headers.get('Authorization')
 
-    name = data.get('trailName')
-    difficulty = data.get('difficulty')
-    danger = data.get('danger')
-    distance = data.get('distance')
-    time = data.get('time')
+    if not token:
+        return jsonify({'sucesso': False, 'mensagem': 'Token JWT ausente'}), 401
+
+    try:
+        if token.startswith("Bearer "):
+            token = token[7:]
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        user_id = decoded['user_id']
+    except jwt.ExpiredSignatureError:
+        return jsonify({'sucesso': False, 'mensagem': 'Token expirado'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'sucesso': False, 'mensagem': 'Token inválido'}), 401
+
+    nome = data.get('trailName')
+    dificuldade = data.get('difficulty')
+    perigo = data.get('danger')
+    distancia = data.get('distance')
+    tempo = data.get('time')
     assistencia = data.get('assistencia')
-    precisaGuia = data.get('precisaGuia')
+    guia = data.get('precisaGuia')
     idosos = data.get('idosos')
     criancas = data.get('criancas')
 
-    if not name:
+    if not nome:
         return jsonify({'sucesso': False, 'mensagem': 'Nome da trilha é obrigatório'}), 400
 
     try:
         conn = get_connection()
         cursor = conn.cursor()
 
-        query = """
-        INSERT INTO trails (name, difficulty, danger, distance_km, duration_h, has_assistance, requires_guide, suitable_for_elders, suitable_for_children)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """
-        values = (
-            name,
-            difficulty,
-            danger,
-            float(distance),
-            float(time),
-            assistencia,
-            precisaGuia,
-            idosos,
-            criancas
+        sql = '''
+            INSERT INTO trails (
+                user_id, nome, dificuldade, perigo,
+                distancia, tempo, assistencia, guia,
+                idosos, criancas
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        '''
+
+        valores = (
+            user_id, nome, dificuldade, perigo,
+            distancia, tempo, assistencia, guia,
+            idosos, criancas
         )
 
-        cursor.execute(query, values)
+        cursor.execute(sql, valores)
         conn.commit()
 
-        return jsonify({'sucesso': True, 'mensagem': 'Trilha cadastrada com sucesso!'}), 201
+        trail_id = cursor.lastrowid
+
+        return jsonify({'sucesso': True, 'mensagem': 'Trilha criada com sucesso', 'trail_id': trail_id}), 201
+
 
     except Exception as e:
-        print('Erro ao cadastrar trilha:', e)
+        print("Erro ao cadastrar trilha:", e)
         return jsonify({'sucesso': False, 'mensagem': 'Erro no servidor'}), 500
+
     finally:
         cursor.close()
         conn.close()

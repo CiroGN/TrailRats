@@ -2,18 +2,21 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   Image,
   Alert,
   ScrollView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import styles from './styles/opcao_fotoStyles'; // importando os estilos separados
+import { navigate } from 'expo-router/build/global-state/routing';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Stack} from "expo-router";
 
 export default function AdicionarFotosScreen() {
   const [imagens, setImagens] = useState([]);
+  const API_URL = 'http://192.168.18.36:5000';
 
-  // Acessa galeria
   const handleGaleria = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -34,7 +37,6 @@ export default function AdicionarFotosScreen() {
     }
   };
 
-  // Acessa câmera
   const handleCamera = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
@@ -53,20 +55,65 @@ export default function AdicionarFotosScreen() {
     }
   };
 
-  const handleAvancar = () => {
-    Alert.alert('Avançar', 'Próxima etapa...');
-    // Aqui você pode navegar para outra tela, por exemplo:
-    // navigation.navigate('ProximaTela');
-  };
+  const handleAvancar = async () => {
+  try {
+    const trailId = await AsyncStorage.getItem('trail_id');
+    if (!trailId) {
+      Alert.alert('Erro', 'ID da trilha não encontrado');
+      return;
+    }
+
+    if (imagens.length === 0) {
+      Alert.alert('Atenção', 'Adicione ao menos uma imagem antes de continuar.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('trail_id', trailId);
+
+    imagens.forEach((uri, index) => {
+      const filename = uri.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename || '');
+      const ext = match ? match[1] : 'jpg';
+      const mimeType = `image/${ext}`;
+
+      formData.append('imagens', {
+        uri,
+        name: `imagem_${index}.${ext}`,
+        type: mimeType,
+      });
+    });
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`${API_URL}/upload_imagem`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.sucesso) {
+      Alert.alert('Sucesso', 'Imagens salvas com sucesso!');
+      navigate('/feed');
+    } else {
+      Alert.alert('Erro', data.mensagem || 'Erro ao enviar imagens.');
+    }
+
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Erro', 'Falha na comunicação com o servidor.');
+  }
+};
 
   return (
     <View style={styles.container}>
-      {/* Cabeçalho */}
       <View style={styles.header}>
         <Text style={styles.headerText}>ADICIONE FOTOS</Text>
       </View>
 
-      {/* Botões de opções */}
       <TouchableOpacity style={styles.optionButton} onPress={handleGaleria}>
         <Image source={require('../assets/images/galeria.png')} style={styles.icon} />
         <Text style={styles.optionText}>GALERIA</Text>
@@ -77,7 +124,6 @@ export default function AdicionarFotosScreen() {
         <Text style={styles.optionText}>CÂMERA</Text>
       </TouchableOpacity>
 
-      {/* Imagens selecionadas */}
       <ScrollView
         horizontal
         contentContainerStyle={styles.imageList}
@@ -88,80 +134,23 @@ export default function AdicionarFotosScreen() {
         ))}
       </ScrollView>
 
-      {/* Botão Avançar */}
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
+        />
+
       <TouchableOpacity style={styles.advanceButton} onPress={handleAvancar}>
         <Text style={styles.advanceText}>AVANÇAR</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#834D1A',
-    alignItems: 'center',
-    paddingTop: 40,
-  },
-  header: {
-    width: '100%',
-    backgroundColor: '#A98D62',
-    paddingVertical: 20,
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  optionButton: {
-    backgroundColor: '#FFD76D',
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#000',
-    width: 220,
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  icon: {
-    width: 40,
-    height: 40,
-    resizeMode: 'contain',
-    marginBottom: 10,
-  },
-  optionText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-  },
-  imageList: {
-    paddingHorizontal: 10,
-    paddingTop: 30,
-  },
-  previewImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    marginRight: 10,
-    borderWidth: 2,
-    borderColor: '#000',
-  },
-  advanceButton: {
-    marginTop: 30,
-    backgroundColor: '#A98D62',
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#000',
-  },
-  advanceText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-});

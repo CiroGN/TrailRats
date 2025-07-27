@@ -1,8 +1,15 @@
+import os
 from flask import Blueprint, request, jsonify
 from db import get_connection
 import bcrypt
+import jwt
+import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 login_bp = Blueprint('login', __name__)
+SECRET_KEY = os.getenv("SECRET_KEY")  # Coloque isso no seu .env: SECRET_KEY=algumasecretasegura
 
 @login_bp.route('/login', methods=['POST'])
 def login():
@@ -17,18 +24,22 @@ def login():
         conn = get_connection()
         cursor = conn.cursor()
 
-        # Buscamos o hash da senha do usuário pelo nome
-        cursor.execute("SELECT password FROM users WHERE name = %s", (nome,))
-        resultado = cursor.fetchone()
+        cursor.execute("SELECT id, password FROM users WHERE name = %s", (nome,))
+        user = cursor.fetchone()
 
-        if not resultado:
-            return jsonify({'sucesso': False, 'mensagem': 'Usuário não encontrado'}), 401
+        if not user:
+            return jsonify({'sucesso': False, 'mensagem': 'Usuário não encontrado'}), 404
 
-        senha_hash_db = resultado[0]
+        user_id, senha_hash_db = user
 
-        # Verificamos se a senha digitada corresponde ao hash salvo
         if bcrypt.checkpw(senha_digitada.encode('utf-8'), senha_hash_db.encode('utf-8')):
-            return jsonify({'sucesso': True}), 200
+            # Geração do token JWT
+            token = jwt.encode({
+                'user_id': user_id,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            }, SECRET_KEY, algorithm='HS256')
+
+            return jsonify({'sucesso': True, 'token': token, 'user_id': user_id}), 200
         else:
             return jsonify({'sucesso': False, 'mensagem': 'Senha incorreta'}), 401
 

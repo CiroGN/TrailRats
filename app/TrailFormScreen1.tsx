@@ -9,9 +9,11 @@ import {
   Alert,
 } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
+import {Stack} from "expo-router";
 
 // Importa o estilo separado
 import styles from './styles/trailFormScreen1Styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TrailFormScreen() {
   const [trailName, setTrailName] = useState('');
@@ -23,13 +25,17 @@ export default function TrailFormScreen() {
   const [precisaGuia, setPrecisaGuia] = useState(false);
   const [idosos, setIdosos] = useState(false);
   const [criancas, setCriancas] = useState(false);
-  const API_URL = 'http://192.168.15.24:5000';
-
+  const API_URL = 'http://192.168.18.36:5000'
   const handleCadastrarTrilha = async () => {
     try {
+      const token = await AsyncStorage.getItem('token');
+      const userId = await AsyncStorage.getItem('user_id');
       const response = await fetch(`${API_URL}/trail`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+         },
         body: JSON.stringify({
           trailName,
           difficulty,
@@ -40,12 +46,14 @@ export default function TrailFormScreen() {
           precisaGuia,
           idosos,
           criancas,
+          userId,
         }),
       });
 
       const data = await response.json();
 
-      if (data.sucesso) {
+      if (data.sucesso && data.trail_id) {
+        await AsyncStorage.setItem('trail_id', String(data.trail_id));
         Alert.alert('Sucesso', data.mensagem);
         navigate('/fotos');
       } else {
@@ -107,6 +115,20 @@ export default function TrailFormScreen() {
               onChangeText={setDistance}
             />
           </View>
+
+          <Stack.Screen
+            name="login"
+            options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: 'orange', 
+              },
+              headerTintColor: 'black', 
+              headerTitleStyle: {
+                color: 'orange', 
+              },
+            }}
+          />
 
           <View style={{ flex: 1 }}>
             <Text style={styles.label}>TEMPO (H)</Text>
