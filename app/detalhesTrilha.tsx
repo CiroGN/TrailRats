@@ -3,8 +3,9 @@ import {
   View, Text, Image, ScrollView, StyleSheet, ActivityIndicator,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import {Stack} from "expo-router";
 
-const API_URL = 'http://192.168.15.24:5000';
+const API_URL = 'http://192.168.18.36:5000';
 
 export default function DetalhesTrilha() {
   const route = useRoute();
@@ -43,6 +44,20 @@ export default function DetalhesTrilha() {
         />
       ))}
 
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
+
+      />
       <View style={styles.infoBox}>
         <Text style={styles.info}>Distância: {trilha.distancia} km</Text>
         <Text style={styles.info}>Tempo: {trilha.tempo} h</Text>

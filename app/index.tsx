@@ -1,27 +1,37 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import { navigate } from 'expo-router/build/global-state/routing';
-import styles from './styles/indexStyles'; // <-- Importando os estilos separados
+import React from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import { navigate } from "expo-router/build/global-state/routing";
+import styles from "./styles/indexStyles"; // <-- Importando os estilos separados
+import {Stack} from "expo-router";
 
 export default function App() {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../assets/images/logo.png')} // Altere para o caminho correto
+        source={require("../assets/images/logo.png")} // Altere para o caminho correto
         style={styles.logo}
       />
 
       <View style={styles.form}>
         <Text style={styles.title}>Bem-vindo ao GymRats</Text>
 
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
+        />
+
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigate('/login')}
+          onPress={() => navigate("/login")}
           activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>Login</Text>
@@ -29,7 +39,7 @@ export default function App() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigate('/cadastro')}
+          onPress={() => navigate("/cadastro")}
           activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>Cadastro</Text>

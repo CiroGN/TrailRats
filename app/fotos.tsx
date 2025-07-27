@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
 import styles from './styles/fotos'; // importando estilos separados
+import {Stack} from "expo-router";
 
 export default function AdicionarFotosScreen() {
   const handleIrParaOpcoes = () => {
@@ -30,6 +31,20 @@ export default function AdicionarFotosScreen() {
         </TouchableOpacity>
       </View>
 
+      <Stack.Screen
+        name="login"
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: 'orange', 
+          },
+          headerTintColor: 'black', 
+          headerTitleStyle: {
+            color: 'orange', 
+          },
+        }}
+      />
+      
       {/* Logo no rodapé */}
       <Image
         source={require('../assets/images/logo.png')}

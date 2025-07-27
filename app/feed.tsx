@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles/feedStyles';
+import {Stack} from "expo-router";
 
-const API_URL = 'http://192.168.15.24:5000';
+const API_URL = 'http://192.168.18.36:5000';
 
 export default function Feed() {
   const navigation = useNavigation();
@@ -47,6 +48,21 @@ export default function Feed() {
           style={styles.imagemCapa}
         />
       )}
+
+      <Stack.Screen
+        name="login"
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: 'orange', 
+          },
+          headerTintColor: 'black', 
+          headerTitleStyle: {
+            color: 'orange', 
+          },
+        }}
+        
+      />
       <View style={styles.trilhaItem}>
         <Text style={styles.trilhaTitulo}>{item.trail_name}</Text>
         <Text style={styles.trilhaData}>por {item.usuario}</Text>
@@ -58,6 +74,8 @@ export default function Feed() {
   );
 
   return (
+
+
     <View style={styles.container}>
       <Text style={styles.title}>Trilhas Recentes</Text>
       {carregando ? (
@@ -71,5 +89,7 @@ export default function Feed() {
         />
       )}
     </View>
+
+    
   );
 }

@@ -19,7 +19,7 @@ loadingContainer: {
 },
 container: {
   flex: 1,
-  backgroundColor: '#FFE7B0',
+  backgroundColor: '#FFA726',
   paddingTop: 60,
   paddingHorizontal: 20,
   },

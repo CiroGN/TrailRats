@@ -9,6 +9,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
+import {Stack} from "expo-router";
 
 // Importando o estilo separado
 import styles from './styles/registerStyles';
@@ -18,7 +19,7 @@ const RegisterScreen: React.FC = () => {
   const [nome, setNome] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
   const [confirmarSenha, setConfirmarSenha] = useState<string>('');
-  const API_URL = 'http://192.168.15.24:5000'
+  const API_URL = 'http://192.168.18.36:5000'
 
   const handleRegister = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -78,6 +79,19 @@ const RegisterScreen: React.FC = () => {
           placeholder="Digite seu email"
           keyboardType="email-address"
           autoCapitalize="none"
+        />
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
         />
 
         <Text style={styles.label}>NOME:</Text>

@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
+import {Stack} from "expo-router";
 
 // Importa o estilo separado
 import styles from './styles/trailFormScreen1Styles';
@@ -24,7 +25,7 @@ export default function TrailFormScreen() {
   const [precisaGuia, setPrecisaGuia] = useState(false);
   const [idosos, setIdosos] = useState(false);
   const [criancas, setCriancas] = useState(false);
-  const API_URL = 'http://192.168.15.24:5000'
+  const API_URL = 'http://192.168.18.36:5000'
   const handleCadastrarTrilha = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -114,6 +115,20 @@ export default function TrailFormScreen() {
               onChangeText={setDistance}
             />
           </View>
+
+          <Stack.Screen
+            name="login"
+            options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: 'orange', 
+              },
+              headerTintColor: 'black', 
+              headerTitleStyle: {
+                color: 'orange', 
+              },
+            }}
+          />
 
           <View style={{ flex: 1 }}>
             <Text style={styles.label}>TEMPO (H)</Text>

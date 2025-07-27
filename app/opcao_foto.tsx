@@ -11,10 +11,11 @@ import * as ImagePicker from 'expo-image-picker';
 import styles from './styles/opcao_fotoStyles'; // importando os estilos separados
 import { navigate } from 'expo-router/build/global-state/routing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Stack} from "expo-router";
 
 export default function AdicionarFotosScreen() {
   const [imagens, setImagens] = useState([]);
-  const API_URL = 'http://192.168.15.24:5000';
+  const API_URL = 'http://192.168.18.36:5000';
 
   const handleGaleria = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -132,6 +133,20 @@ export default function AdicionarFotosScreen() {
           <Image key={index} source={{ uri }} style={styles.previewImage} />
         ))}
       </ScrollView>
+
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
+        />
 
       <TouchableOpacity style={styles.advanceButton} onPress={handleAvancar}>
         <Text style={styles.advanceText}>AVANÇAR</Text>

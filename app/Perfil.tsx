@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { navigate } from 'expo-router/build/global-state/routing';
 import styles from './styles/perfilStyles';
+import {Stack} from "expo-router";
 
 export default function ProfileScreen() {
   const distanciaPercorrida = '0 km';
@@ -33,6 +34,20 @@ export default function ProfileScreen() {
         </View>
       </View>
 
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
+        />
+        
       <TouchableOpacity style={styles.button} onPress={handleEditar}>
         <Text style={styles.buttonText}>EDITAR PERFIL</Text>
       </TouchableOpacity>

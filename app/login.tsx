@@ -1,23 +1,24 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Stack } from "expo-router";
+import { navigate } from 'expo-router/build/global-state/routing';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   Alert,
   Image,
   SafeAreaView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { navigate } from 'expo-router/build/global-state/routing';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // IMPORTANDO SEU ESTILO SEPARADO
-import styles from './styles/loginStyles'; 
+import styles from './styles/loginStyles';
 
 const LoginScreen: React.FC = () => {
   const [nome, setNome] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
-  const API_URL = 'http://192.168.15.24:5000'
+  const API_URL = 'http://192.168.18.36:5000'
   const handleLogin = async () => {
     try {
       const response = await fetch(`${API_URL}/login`, {
@@ -56,6 +57,20 @@ const LoginScreen: React.FC = () => {
           value={nome}
           onChangeText={setNome}
           placeholder="Digite seu nome"
+        />
+
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
         />
 
         <Text style={styles.label}>SENHA:</Text>

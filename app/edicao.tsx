@@ -11,6 +11,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles/edicao'; // importação dos estilos separados
+import {Stack} from "expo-router";
 
 export default function EditProfileScreen() {
   const [name, setName] = useState('Ciro');
@@ -52,7 +53,20 @@ export default function EditProfileScreen() {
             </View>
           )}
         </TouchableOpacity>
-
+        
+        <Stack.Screen
+          name="login"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'orange', 
+            },
+            headerTintColor: 'black', 
+            headerTitleStyle: {
+              color: 'orange', 
+            },
+          }}
+        />
         <TextInput
           style={styles.input}
           value={name}
