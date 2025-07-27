@@ -155,7 +155,7 @@ Certifique-se de ajustar o IP no `API_URL` para o IP local da sua máquina na re
 
 ## 🌟 Agradecimentos
 
-- [Marjorie Daenecke](https://github.com/MarjorieDaenecke) – pela colaboração e apoio durante o desenvolvimento do projeto.
+- [Marjorie Ap. Cortez Daenecke](https://github.com/MarjorieDaenecke) – pela colaboração e apoio durante o desenvolvimento do projeto.
 
 ---
 
